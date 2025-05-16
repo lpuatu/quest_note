@@ -1,6 +1,4 @@
 from flask import Flask, render_template
-import os
-from argparse import ArgumentParser
 
 app = Flask(__name__, static_folder='static')
 
@@ -14,11 +12,4 @@ def build():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    parser = ArgumentParser()
-    parser.add_argument('--build', action='store_true', help='Build mode for GitHub Pages')
-    args = parser.parse_args()
-
-    if args.build:
-        app.run(debug=False, port=443)
-    else:
-        app.run(debug=True, port=5002)
+    app.run(debug=True, port=5002)
