@@ -1,4 +1,6 @@
 from flask import Flask, render_template
+import os
+from argparse import ArgumentParser
 
 app = Flask(__name__, static_folder='static')
 
@@ -6,5 +8,17 @@ app = Flask(__name__, static_folder='static')
 def index():
     return render_template('index.html')
 
+@app.route('/build')
+def build():
+    # This route is used by GitHub Actions to build the static files
+    return render_template('index.html')
+
 if __name__ == '__main__':
-    app.run(debug=True, port=5002)
+    parser = ArgumentParser()
+    parser.add_argument('--build', action='store_true', help='Build mode for GitHub Pages')
+    args = parser.parse_args()
+
+    if args.build:
+        app.run(debug=False, port=443)
+    else:
+        app.run(debug=True, port=5002)
