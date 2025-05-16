@@ -34,3 +34,11 @@ jobs:
         publish_dir: ./src
         force_orphan: true
         keep_history: false
+        clean: true
+        
+    # Copy static files to root
+    - name: Copy static files
+      run: |
+        cp -r src/static/* .
+        cp -r src/templates/* .
+        cp src/quest_note/app.py .
