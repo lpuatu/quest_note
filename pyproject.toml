@@ -1,15 +1,21 @@
 [project]
 name = "quest-note"
 version = "0.1.0"
-description = "An application to help writers meet their word count goals in a fun game-like structure."
+description = "A web application to help writers meet their word count goals with a gamified interface"
 authors = [
-    {name = "logan.puatu",email = "loganjpuatu@gmail.com"}
+    {name = "logan.puatu", email = "loganjpuatu@gmail.com"}
 ]
 readme = "README.md"
 requires-python = ">=3.11.0,<4.0.0"
 
 [tool.poetry]
-packages = [{include = "src"}]
+packages = [{include = "quest_note", from = "src"}]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+black = "^23.11.0"
+isort = "^5.13.2"
+flake8 = "^6.1.0"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
