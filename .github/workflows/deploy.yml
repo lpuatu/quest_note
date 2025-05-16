@@ -11,21 +11,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    # Set up Python
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-
-    # Install Poetry
-    - name: Install Poetry
-      run: curl -sSL https://install.python-poetry.org | python3 -
-
-    # Install dependencies
-    - name: Install dependencies
-      run: |
-        poetry install
-
     # Deploy to GitHub Pages
     - name: Deploy with GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
@@ -35,10 +20,3 @@ jobs:
         force_orphan: true
         keep_history: false
         clean: true
-        
-    # Copy static files to root
-    - name: Copy static files
-      run: |
-        cp -r src/static/* .
-        cp -r src/templates/* .
-        cp src/quest_note/app.py .
