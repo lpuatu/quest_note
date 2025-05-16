@@ -7,6 +7,10 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
 
     steps:
     - uses: actions/checkout@v3
@@ -20,3 +24,9 @@ jobs:
         force_orphan: true
         keep_history: false
         clean: true
+        
+    # Configure GitHub Pages
+    - name: Configure GitHub Pages
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
