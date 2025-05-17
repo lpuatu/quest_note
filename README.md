@@ -12,17 +12,26 @@ A web application that helps writers meet their word count goals through a gamif
 
 ## Setup
 
-1. Install dependencies:
+### Install Poetry (for local development)
+
+1. Install Poetry using official installer:
 ```bash
-poetry install
+curl -sSL https://install.python-poetry.org | python3 -
 ```
 
-2. Run the development server:
+2. Verify installation:
 ```bash
-poetry run python -m quest_note.app
+poetry --version
 ```
 
-The application will be available at http://localhost:5002
+### Run the Application
+
+1. Run the local development server:
+```bash
+poetry run python serve.py
+```
+
+The application will be available at http://localhost:8000
 
 ## Deployment
 
@@ -33,25 +42,15 @@ https://lpuatu.github.io/quest_note/
 
 ```
 quest_note/
-├── src/                 # Source code root
-│   ├── quest_note/      # Python package
-│   │   ├── __init__.py
-│   │   └── app.py      # Main application code
-│   ├── static/         # Static files (CSS, JS, images)
-│   │   └── js/
-│   │       └── editor.js
-│   └── templates/      # HTML templates
-│       └── index.html
-├── tests/              # Test files
-├── .github/            # GitHub Actions
-│   └── workflows/
-│       └── deploy.yml
-├── .gitignore
-├── pyproject.toml
+├── index.html          # Main application page
+├── static/             # Static files
+│   ├── css/
+│   │   └── style.css  # Application styles
+│   └── js/
+│       └── editor.js   # Application logic
+├── serve.py            # Local development server
 ├── README.md
-└── poetry.lock
+└── .gitignore
 ```
 
 ## License
-
-MIT License
