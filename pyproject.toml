@@ -23,6 +23,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.dependencies]
 flask = "^3.1.1"
+flask-cors = "^4.0.0"
 python-dotenv = "^1.0.0"
 requests = "^2.31.0"
 PyGithub = "^2.1.4"

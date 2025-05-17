@@ -7,8 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const decayRateInput = document.getElementById('decay-rate');
     const decayRateValue = document.getElementById('decay-rate-value');
     let decayTimer;
-    let lastWordCount = 0;
-    let healthPercentage = 100;
 
     // Update decay rate value display
     decayRateInput.addEventListener('input', (e) => {
@@ -21,51 +19,50 @@ document.addEventListener('DOMContentLoaded', () => {
     updateDecayRate(2.0);
 
     // Update word count and health bar on input
-    editor.addEventListener('input', updateWordCount);
-
-    // Update word count
-    function updateWordCount() {
-        const words = editor.value.trim().split(/\s+/).filter(Boolean);
-        wordCount.textContent = `${words.length} words`;
-    }
+    editor.addEventListener('input', async (e) => {
+        const response = await fetch('/api/update-text', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                text: editor.value
+            })
+        });
+        const data = await response.json();
+        wordCount.textContent = `${data.word_count} words`;
+        healthBarFill.style.width = `${data.health_percentage}%`;
+        healthValue.textContent = `${Math.round(data.health_percentage)}%`;
+    });
 
     // Update decay rate
-    function updateDecayRate(rate) {
-        // Clear existing timer
-        if (decayTimer) {
-            clearInterval(decayTimer);
-        }
-
-        // Create new timer
-        decayTimer = setInterval(() => {
-            // Calculate health loss based on decay rate
-            const words = editor.value.trim().split(/\s+/).filter(Boolean).length;
-            const healthLoss = rate * 0.1; // 100ms interval
-            healthPercentage = Math.max(0, healthPercentage - healthLoss);
-
-            // Update health bar and value display
-            healthBarFill.style.width = `${healthPercentage}%`;
-            healthValue.textContent = `${Math.round(healthPercentage)}%`;
-            
-            // Change color based on health
-            if (healthPercentage >= 75) {
-                healthBarFill.style.backgroundColor = '#4CAF50';
-            } else if (healthPercentage >= 50) {
-                healthBarFill.style.backgroundColor = '#FFA500';
-            } else {
-                healthBarFill.style.backgroundColor = '#FF4444';
-            }
-
-            // Reset health if words increase
-            if (words > lastWordCount) {
-                healthPercentage = 100;
-                healthBarFill.style.width = '100%';
-                healthBarFill.style.backgroundColor = '#4CAF50';
-                healthValue.textContent = '100%';
-            }
-            lastWordCount = words;
-        }, 100); // 100ms interval
+    async function updateDecayRate(rate) {
+        const response = await fetch('/api/update-decay', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                rate: rate
+            })
+        });
+        const data = await response.json();
+        decayRateValue.textContent = data.decay_rate;
     }
+
+    // Get initial state
+    async function getInitialState() {
+        const response = await fetch('/api/get-state');
+        const data = await response.json();
+        editor.value = data.text;
+        wordCount.textContent = `${data.word_count} words`;
+        healthBarFill.style.width = `${data.health_percentage}%`;
+        healthValue.textContent = `${Math.round(data.health_percentage)}%`;
+        decayRateInput.value = data.decay_rate;
+        decayRateValue.textContent = data.decay_rate;
+    }
+
+    getInitialState();
 
     // Clear editor
     function clearEditor() {
